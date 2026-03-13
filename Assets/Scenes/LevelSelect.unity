@@ -288,8 +288,8 @@ MonoBehaviour:
   ButtonSpacing: 120
   GridOrigin: {x: -240, y: 100}
   ButtonSize: 1
-  CompletedColor: {r: 0, g: 1, b: 0, a: 1}
-  UnlockedColor: {r: 0, g: 0, b: 1, a: 1}
+  CompletedColor: {r: 0, g: 0, b: 1, a: 1}
+  UnlockedColor: {r: 0, g: 1, b: 0, a: 1}
   LockedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   QuitButtonColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1428736706

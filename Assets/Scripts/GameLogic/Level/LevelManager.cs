@@ -21,15 +21,7 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
     [Header("Initial Blueprint")]
     public BlueprintData InitialBlueprint = new BlueprintData();
 
-    [Header("Area Visuals")]
-    public Color InventoryBackgroundColor = new Color(0f, 0f, 0f, 0.3f);
-    public Color BuildAreaBackgroundColor = new Color(0f, 0f, 0f, 0.15f);
-
-    [Header("UI Prefab Settings")]
-    public Color ExitButtonColor = Color.white;
-    public Color StartButtonColor = Color.green;
-    public Color StopButtonColor = Color.red;
-    public Color NextButtonColor = Color.green;
+    [Header("UI Settings")]
     public float UIButtonSize = 0.8f;
 
     public LevelState CurrentState { get; private set; } = LevelState.Build;
@@ -109,11 +101,11 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
 
         _exitButton = CreateUIButton(
             "ExitButton", "Exit", ButtonShape.TriangleLeft,
-            ExitButtonColor, new Vector2(0f, 1f), new Vector2(60f, -60f));
+            ColorConfig.Instance.ExitButtonColor, new Vector2(0f, 1f), new Vector2(60f, -60f));
 
         _actionButton = CreateUIButton(
-            "ActionButton", "Start", ButtonShape.Circle,
-            StartButtonColor, new Vector2(1f, 0f), new Vector2(-60f, 60f));
+            "ActionButton", "Start", ButtonShape.TriangleRight,
+            ColorConfig.Instance.StartButtonColor, new Vector2(1f, 0f), new Vector2(-60f, 60f));
     }
 
     private void CreateCanvas()
@@ -140,7 +132,7 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
     private void CreateInventoryBackground()
     {
         _inventoryBg = CreateAreaBackground("InventoryBackground",
-            GetInventoryArea(), InventoryBackgroundColor);
+            GetInventoryArea(), ColorConfig.Instance.InventoryBackgroundColor);
     }
 
     private void CreateBuildAreaBackground()
@@ -155,7 +147,7 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
         var mr = _buildAreaBg.AddComponent<MeshRenderer>();
 
         mr.material = new Material(Shader.Find("Sprites/Default"));
-        mr.material.color = BuildAreaBackgroundColor;
+        mr.material.color = ColorConfig.Instance.BuildAreaBackgroundColor;
         mr.sortingOrder = -100;
 
         mf.mesh = CreatePolygonMesh(poly);
@@ -289,7 +281,7 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
         }
 
         SetupAllNodesForBuild();
-        SetActionButton("Start", ButtonShape.Circle, StartButtonColor);
+        SetActionButton("Start", ButtonShape.TriangleRight, ColorConfig.Instance.StartButtonColor);
         SetBuildUIVisible(true);
 
         var camCtrl = _mainCamera.GetComponent<RuntimeCameraController>();
@@ -347,7 +339,7 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
             node.EnterRunMode();
         }
 
-        SetActionButton("Stop", ButtonShape.Square, StopButtonColor);
+        SetActionButton("Stop", ButtonShape.Square, ColorConfig.Instance.StopButtonColor);
         SetBuildUIVisible(false);
 
         var camCtrl = _mainCamera.GetComponent<RuntimeCameraController>();
@@ -363,7 +355,7 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
 
         SaveManager.Instance.CompleteLevel(LevelIndex);
 
-        SetActionButton("Next", ButtonShape.TriangleRight, NextButtonColor);
+        SetActionButton("Next", ButtonShape.TriangleRight, ColorConfig.Instance.NextButtonColor);
     }
 
     private void SetActionButton(string buttonName, ButtonShape shape, Color color)
@@ -551,8 +543,9 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
     {
         if (BuildAreaVertices == null || BuildAreaVertices.Count < 3) return;
 
-        Gizmos.color = new Color(BuildAreaBackgroundColor.r, BuildAreaBackgroundColor.g,
-            BuildAreaBackgroundColor.b, 0.8f);
+        Gizmos.color = new Color(ColorConfig.Instance.BuildAreaBackgroundColor.r,
+            ColorConfig.Instance.BuildAreaBackgroundColor.g,
+            ColorConfig.Instance.BuildAreaBackgroundColor.b, 0.8f);
 
         for (int i = 0; i < BuildAreaVertices.Count; i++)
         {
@@ -570,8 +563,9 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
                 Gizmos.DrawWireSphere(v.position, 0.15f);
         }
 
-        Gizmos.color = new Color(InventoryBackgroundColor.r, InventoryBackgroundColor.g,
-            InventoryBackgroundColor.b, 0.8f);
+        Gizmos.color = new Color(ColorConfig.Instance.InventoryBackgroundColor.r,
+            ColorConfig.Instance.InventoryBackgroundColor.g,
+            ColorConfig.Instance.InventoryBackgroundColor.b, 0.8f);
         Rect inv = GetInventoryArea();
         Vector3 invCenter = new Vector3(
             inv.x + inv.width * 0.5f,

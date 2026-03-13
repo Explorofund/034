@@ -11,11 +11,10 @@ public class LevelSelectManager : MonoBehaviour, IButtonReceiver
     public Vector2 GridOrigin = new Vector2(-240f, 100f);
     public float ButtonSize = 1f;
 
-    [Header("Colors")]
-    public Color CompletedColor = Color.green;
-    public Color UnlockedColor = Color.blue;
-    public Color LockedColor = Color.gray;
-    public Color QuitButtonColor = Color.red;
+    private Color CompletedColor => ColorConfig.Instance.CompletedLevelColor;
+    private Color UnlockedColor => ColorConfig.Instance.UnlockedLevelColor;
+    private Color LockedColor => ColorConfig.Instance.LockedLevelColor;
+    private Color QuitButtonColor => ColorConfig.Instance.QuitButtonColor;
 
     private Canvas _canvas;
 
