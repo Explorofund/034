@@ -7,13 +7,10 @@ public class NodeConnection
     public float RestLength;
     public bool IsBroken;
 
-    // Per-endpoint angle tracking for rotating nodes
-    private float _initialAngleA;
-    private float _initialAngleB;
-    private float _prevAngleA;
-    private float _prevAngleB;
     private float _initialRelAngleA;
     private float _initialRelAngleB;
+    private float _prevRelAngleA;
+    private float _prevRelAngleB;
 
     public NodeConnection(Node a, Node b)
     {
@@ -28,15 +25,19 @@ public class NodeConnection
         IsBroken = false;
 
         float rawAngle = Mathf.Atan2(delta.y, delta.x);
-        _initialAngleA = rawAngle;
-        _prevAngleA = rawAngle;
-        _initialAngleB = rawAngle + Mathf.PI;
-        _prevAngleB = rawAngle + Mathf.PI;
 
         if (NodeA.CanRotate)
-            _initialRelAngleA = rawAngle - NodeA.transform.eulerAngles.z * Mathf.Deg2Rad;
+        {
+            float nodeAngle = NodeA.transform.eulerAngles.z * Mathf.Deg2Rad;
+            _initialRelAngleA = rawAngle - nodeAngle;
+            _prevRelAngleA = _initialRelAngleA;
+        }
         if (NodeB.CanRotate)
-            _initialRelAngleB = (rawAngle + Mathf.PI) - NodeB.transform.eulerAngles.z * Mathf.Deg2Rad;
+        {
+            float nodeAngle = NodeB.transform.eulerAngles.z * Mathf.Deg2Rad;
+            _initialRelAngleB = (rawAngle + Mathf.PI) - nodeAngle;
+            _prevRelAngleB = _initialRelAngleB;
+        }
     }
 
     public void ComputeAndApplyForces()
@@ -77,11 +78,10 @@ public class NodeConnection
 
         if (NodeA.CanRotate)
         {
-            float unwrapped = SpringPhysics.UnwrapAngle(rawAngle, _prevAngleA);
-            _prevAngleA = unwrapped;
-
             float nodeAngleRad = NodeA.transform.eulerAngles.z * Mathf.Deg2Rad;
-            float relAngle = unwrapped - nodeAngleRad;
+            float rawRelAngle = rawAngle - nodeAngleRad;
+            float relAngle = SpringPhysics.UnwrapAngle(rawRelAngle, _prevRelAngleA);
+            _prevRelAngleA = relAngle;
 
             float torque = SpringPhysics.ComputeAngularTorque(
                 relAngle, _initialRelAngleA,
@@ -98,12 +98,10 @@ public class NodeConnection
 
         if (NodeB.CanRotate)
         {
-            float rawAngleB = rawAngle + Mathf.PI;
-            float unwrappedB = SpringPhysics.UnwrapAngle(rawAngleB, _prevAngleB);
-            _prevAngleB = unwrappedB;
-
             float nodeAngleRad = NodeB.transform.eulerAngles.z * Mathf.Deg2Rad;
-            float relAngle = unwrappedB - nodeAngleRad;
+            float rawRelAngle = (rawAngle + Mathf.PI) - nodeAngleRad;
+            float relAngle = SpringPhysics.UnwrapAngle(rawRelAngle, _prevRelAngleB);
+            _prevRelAngleB = relAngle;
 
             float torque = SpringPhysics.ComputeAngularTorque(
                 relAngle, _initialRelAngleB,

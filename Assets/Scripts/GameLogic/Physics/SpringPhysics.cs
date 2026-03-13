@@ -41,7 +41,7 @@ public static class SpringPhysics
         float currentAngle, float initialAngle,
         float angularK, float angularVel, float angularDamping)
     {
-        float angleDiff = currentAngle - initialAngle;
+        float angleDiff = initialAngle - currentAngle;
         return -angularK * angleDiff - angularDamping * angularVel;
     }
 }

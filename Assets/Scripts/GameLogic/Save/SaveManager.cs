@@ -33,8 +33,8 @@ public class SaveManager
 
     public int GetUnlockedCount()
     {
-        int count = _payload.completedLevels.Count + GameConstants.InitialUnlockedLevelNum;
-        return Mathf.Min(count, GameConstants.TotalLevelNum);
+        int count = _payload.completedLevels.Count + GameConfig.Instance.InitialUnlockedLevelNum;
+        return Mathf.Min(count, GameConfig.Instance.TotalLevelNum);
     }
 
     public bool IsLevelUnlocked(int levelIndex)

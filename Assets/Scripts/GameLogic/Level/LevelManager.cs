@@ -275,7 +275,7 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
                 if (CurrentState == LevelState.Build)
                     _memoryBlueprint = CaptureBlueprint();
                 SaveBlueprintToDisk();
-                SceneManager.LoadScene(GameConstants.LevelSelectSceneName);
+                SceneManager.LoadScene(GameConfig.Instance.LevelSelectSceneName);
                 return true;
 
             case "Start":
@@ -293,10 +293,10 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
                 {
                     SaveBlueprintToDisk();
                     int next = LevelIndex + 1;
-                    if (next >= GameConstants.TotalLevelNum)
-                        SceneManager.LoadScene(GameConstants.LevelSelectSceneName);
+                    if (next >= GameConfig.Instance.TotalLevelNum)
+                        SceneManager.LoadScene(GameConfig.Instance.LevelSelectSceneName);
                     else
-                        SceneManager.LoadScene(GameConstants.GetLevelSceneName(next));
+                        SceneManager.LoadScene(GameConfig.Instance.GetLevelSceneName(next));
                 }
                 return true;
         }
@@ -507,7 +507,7 @@ public class LevelManager : MonoBehaviour, IButtonReceiver
                 spawnPos = new Vector3(nd.posX, nd.posY, 0f);
             }
 
-            var go = Instantiate(prefab, spawnPos, Quaternion.identity);
+            var go = Instantiate(prefab, spawnPos, prefab.transform.rotation);
             var node = go.GetComponent<Node>();
             if (node == null) continue;
 

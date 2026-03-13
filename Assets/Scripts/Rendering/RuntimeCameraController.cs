@@ -124,12 +124,12 @@ public class RuntimeCameraController : MonoBehaviour
             Vector2 fromCamera = (Vector2)node.transform.position - currentCamPos;
 
             float neededFromTarget = Mathf.Max(
-                Mathf.Abs(fromTarget.x) / (GameConstants.MaxHorizontalSpan * aspect),
-                Mathf.Abs(fromTarget.y) / GameConstants.MaxVerticalSpan);
+                Mathf.Abs(fromTarget.x) / (GameConfig.Instance.MaxHorizontalSpan * aspect),
+                Mathf.Abs(fromTarget.y) / GameConfig.Instance.MaxVerticalSpan);
 
             float neededFromCamera = Mathf.Max(
-                Mathf.Abs(fromCamera.x) / (GameConstants.MaxHorizontalSpan * aspect),
-                Mathf.Abs(fromCamera.y) / GameConstants.MaxVerticalSpan);
+                Mathf.Abs(fromCamera.x) / (GameConfig.Instance.MaxHorizontalSpan * aspect),
+                Mathf.Abs(fromCamera.y) / GameConfig.Instance.MaxVerticalSpan);
 
             float needed = Mathf.Max(neededFromTarget, neededFromCamera);
             if (needed > requiredHalf)

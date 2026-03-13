@@ -5,7 +5,7 @@ public abstract class Node : MonoBehaviour
 {
     [Header("Connection Settings")]
     public float MaxConnectRadius = 3f;
-    public float MinConnectDistance = 2f;
+    public float MinConnectRadius = 2f;
     public int MaxConnectNumber = 3;
 
     [Header("Physics Properties")]
@@ -14,10 +14,10 @@ public abstract class Node : MonoBehaviour
     public float Mass = 1f;
 
     public static float SpringK = 500f;
-    public static float SpringDamping = 10f;
+    public static float SpringDamping = 5f;
     public static float SpringBreakLength = 2f;
-    public static float AngularSpringK = 50f;
-    public static float AngularSpringDamping = 5f;
+    public static float AngularSpringK = 200f;
+    public static float AngularSpringDamping = 2f;
 
     [HideInInspector] public List<NodeConnection> ActiveConnections = new List<NodeConnection>();
     [HideInInspector] public bool IsInInventory = true;
@@ -58,7 +58,7 @@ public abstract class Node : MonoBehaviour
         }
         else
         {
-            Rb.gravityScale = 0f;
+            // Rb.gravityScale = 0f;
             if (Col != null) Col.enabled = false;
         }
 

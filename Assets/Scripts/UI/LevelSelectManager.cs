@@ -36,7 +36,7 @@ public class LevelSelectManager : MonoBehaviour, IButtonReceiver
         if (Input.GetKeyDown(KeyCode.R) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
         {
             SaveManager.Instance.ClearAll();
-            for (int i = 0; i < GameConstants.TotalLevelNum; i++)
+            for (int i = 0; i < GameConfig.Instance.TotalLevelNum; i++)
                 BlueprintData.DeleteBlueprint(i);
             RefreshButtons();
         }
@@ -73,7 +73,7 @@ public class LevelSelectManager : MonoBehaviour, IButtonReceiver
 
     private void GenerateLevelButtons()
     {
-        for (int i = 0; i < GameConstants.TotalLevelNum; i++)
+        for (int i = 0; i < GameConfig.Instance.TotalLevelNum; i++)
         {
             int row = i / Columns;
             int col = i % Columns;
@@ -144,7 +144,7 @@ public class LevelSelectManager : MonoBehaviour, IButtonReceiver
             {
                 if (SaveManager.Instance.IsLevelUnlocked(levelIndex))
                 {
-                    SceneManager.LoadScene(GameConstants.GetLevelSceneName(levelIndex));
+                    SceneManager.LoadScene(GameConfig.Instance.GetLevelSceneName(levelIndex));
                     return true;
                 }
             }
